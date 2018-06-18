@@ -24,14 +24,13 @@ loadData <- function(dataset=1:5){
   Sys.setlocale()
   return(df)
 }
-ts=df_train$Qty;len_wdw = 4
+# ts=df_train$Qty;len_wdw = 4
 generateFeatures <- function(ts, len_wdw, prefix="TS", seasonal=c(3,6), dataFrameOutput=FALSE){
   ## the len_wdw is the number of rows used to create a row in a new data.
   ## regression based feature can use only len_wdw-1 rows to fit regressor.
   ## For example, 4 rows(t-1, t-2, t-3, t-4) are used to create a row and it corresponds to the t'th row of target(y) value.
   
   library(dplyr)
-  library(purrr)
   library(zoo)
   if(min(seasonal)<2|max(seasonal)>12){
     print('The seasonal must be >=2 or <=12')
@@ -149,5 +148,5 @@ rollingPredict <- function(ts, fcst_h, len_wdw, seasonal=c(4,6), model, outputDa
 
 
 mape <- function(p, y){
-  100-(100/length(y)*sum(abs((y-p)/y)))
+  100/length(y)*sum(abs((y-p)/y))
 }
